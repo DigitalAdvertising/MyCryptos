@@ -1,0 +1,5 @@
+[user]
+        name = wenpei
+        email = daechain@gmail.com
+[core]
+        excludesfile = ~/.gitignore_global
