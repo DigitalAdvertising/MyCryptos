@@ -1,0 +1,23 @@
+{
+  "latest": "1.1.3",
+  "note":{
+     "en":"This version include below update: 1. Fix QR Code scan issues",
+     "zh":"本次更新主要包括：1. 修正了二维码地址扫描的问题"
+  },
+  "version":[
+    {
+      "number": "1.1.3",
+      "note":{
+        "en":"This version include below update: 1. Fix QR Code scan issues",
+        "zh":"本次更新主要包括：1. 修正了二维码地址扫描的问题"
+      }
+    },
+    {
+      "number": "1.0.3",
+      "note":{
+        "en":"This version include below update: 1. Support new version push. 2. Fix some issues",
+        "zh":"本次更新主要包括：1. 加入了新版本推送功能。2. 修正了一些显示问题"
+      }
+    }
+  ]
+}

@@ -17,6 +17,7 @@ import getBalance from '../../utils/addTokens';
 import iterface from '../../utils/iterface';
 import { I18n } from '../../../language/i18n';
 import { checkVersion } from '../../api/index';
+import versionCompare from '../../utils/versionCompare'
 var DeviceInfo = require('react-native-device-info');
 
 class CurrencyList extends Component {
@@ -46,7 +47,7 @@ class CurrencyList extends Component {
 					</View>
 					<View>
 						<Text style={styles.alignRight}>{this.props.item.balance}</Text>
-						<Text style={[ styles.alignRight, styles.currency ]} />
+						<Text style={[styles.alignRight, styles.currency]} />
 					</View>
 				</View>
 			</TouchableHighlight>
@@ -67,7 +68,6 @@ class Assets extends Component {
 			lock_num: 0,
 			newVersion: '--',
 			modalVisible: false,
-			currentVersion: null,
 			isRefreshing: true
 		};
 
@@ -120,7 +120,7 @@ class Assets extends Component {
 			}
 		);
 
-		this.updataWalletName();
+		this.updateWalletName();
 
 		setTimeout(() => {
 			this.setState({
@@ -148,29 +148,72 @@ class Assets extends Component {
 			.catch((x) => {
 				console.log(x);
 			});
-		this.updataWalletName();
+		this.updateWalletName();
 
-		this.setState({
-			currentVersion: DeviceInfo.default.getVersion().replace(/\./g, '')
-		});
+		// this.setState({
+		// 	currentVersion: DeviceInfo.default.getVersion()
+		// });
 
-		// checkVersion()
-		// 	.then((result) => {
-		// 		return result.data.data;
-		// 	})
-		// 	.then((res) => {
-		// 		this.setState({
-		// 			newVersion: res.version,
-		// 			modalVisible: true
-		// 		});
-		// 		let ver_new = res.version.replace(/\./g, '');
-		// 		if (ver_new > this.state.currentVersion) {
-		// 			this.setState({ modalVisible: true });
-		// 		}
-		// 	});
+		checkVersion()
+			.then((result) => {
+				return result.data;
+			})
+			.then((resVersion) => {
+				console.log(resVersion)
+				const latest = resVersion.latest
+				const current = DeviceInfo.default.getVersion()
+				console.log("latest version: " + latest)
+				console.log("current version: " + current)
+				console.log(versionCompare(latest, current))
+
+				if (versionCompare(latest, current) > 0) {
+					storage
+						.load({
+							key: 'localLanguage'
+						})
+						.then((res) => {
+							res.localLanguage&&res.localLanguage.includes('zh') ?
+								this.setState({
+									modalVisible: true,
+									newVersion: latest,
+									releaseLog: resVersion.note["zh"]
+								})
+								:
+								this.setState({
+									modalVisible: true,
+									newVersion: latest,
+									releaseLog: resVersion.note["en"]
+								})
+						}).catch((e) => {
+							DeviceInfo.default.getDeviceLocale().includes('zh')?
+							this.setState({
+								modalVisible: true,
+								newVersion: latest,
+								releaseLog: resVersion.note["zh"]
+							})
+							:
+							this.setState({
+								modalVisible: true,
+								newVersion: latest,
+								releaseLog: resVersion.note["en"]
+							})
+					})
+				}
+				// this.setState({
+				// 	newVersion: res.latest,
+				// 	modalVisible: true
+				// });
+				// let ver_new = res.version.replace(/\./g, '');
+				// if (ver_new > this.state.currentVersion) {
+				// 	this.setState({ modalVisible: true });
+				// }
+			})
+			.catch((x) => {
+				console.log(x);
+			});;
 	}
 
-	updataWalletName() {
+	updateWalletName() {
 		storage
 			.load({
 				key: 'walletName'
@@ -205,12 +248,12 @@ class Assets extends Component {
 			{
 				currency_name: 'BCAC',
 				balance: this.state.bcac_balance,
-				logo_url: require('../../assets/images/currency_logo/bcac_logo.png')				
+				logo_url: require('../../assets/images/currency_logo/bcac_logo.png')
 			},
 			{
 				currency_name: 'DAEC',
 				balance: this.state.daec_balance,
-				logo_url: require('../../assets/images/currency_logo/daec_logo.png')				
+				logo_url: require('../../assets/images/currency_logo/daec_logo.png')
 			}
 		];
 		return (
@@ -273,6 +316,50 @@ class Assets extends Component {
 						return <CurrencyList item={item} index={index} key={index} navigate={this.navigate} />;
 					})}
 				</ScrollView>
+
+				<Modal
+					animationType={'fade'}
+					transparent={true}
+					visible={this.state.modalVisible}
+					onRequestClose={() => {
+						this.setState({ modalVisible: false });
+					}}
+				>
+					<View style={styles.modalCon}>
+						<View style={styles.modal}>
+							<Text style={styles.modalTitle}>{I18n.t('my.version._newVersion')} {this.state.newVersion} {I18n.t('my.version._version')}</Text>
+							<Text style={styles.modalText}>
+								{this.state.releaseLog}
+							</Text>
+							<View style={styles.modalBottomBtn}>
+								<View>
+									<Text
+										style={styles.modalBottomBtnNoText}
+										onPress={() => {
+											this.setState({
+												modalVisible: false
+											});
+										}}
+									>
+										{I18n.t('my.version.noEscalation')}
+									</Text>
+								</View>
+								<View>
+									<Text
+										style={styles.modalBottomBtnYesText}
+										onPress={() => {
+											Linking.openURL('http://mycryptos.daec.top').catch((err) =>
+												console.error('An error occurred', err)
+											);
+										}}
+									>
+										{I18n.t('my.version.upgradeNow')}
+									</Text>
+								</View>
+							</View>
+						</View>
+					</View>
+				</Modal>
 			</View>
 		);
 	}
@@ -410,6 +497,14 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		paddingLeft: 15,
 		paddingRight: 15
+	},
+	modalText: {
+		fontSize: 12,
+		paddingLeft: 15,
+		paddingRight: 15,
+		paddingBottom: 20,
+		lineHeight: 20,
+		textAlign: 'left',
 	},
 	versionText: {
 		paddingLeft: 15,

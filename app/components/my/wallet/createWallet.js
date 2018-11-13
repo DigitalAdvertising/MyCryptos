@@ -34,13 +34,13 @@ class CreateWallet extends Component {
 				res.localLanguage.includes('zh')
 					? this.setState({
 							service_source: {
-								uri: 'https://github.com/BusinessCredit/BCAC_Wallet_Terms_of_Service/raw/master/BCAC_Wallet_Terms_of_Service_zh.pdf',
+								uri: 'https://github.com/DigitalAdvertising/MyCryptosServiceTerm/raw/master/MyCryptos_Wallet_Terms_of_Service_zh.pdf',
 								cache: true
 							}
 						})
 					: this.setState({
 							service_source: {
-								uri: 'https://github.com/BusinessCredit/BCAC_Wallet_Terms_of_Service/raw/master/BCAC_Wallet_Terms_of_Service_en.pdf',
+								uri: 'https://github.com/DigitalAdvertising/MyCryptosServiceTerm/raw/master/MyCryptos_Wallet_Terms_of_Service_en.pdf',
 								cache: true
 							}
 						});
@@ -49,13 +49,13 @@ class CreateWallet extends Component {
 				DeviceInfo.default.getDeviceLocale().includes('zh')
 					? this.setState({
 							service_source: {
-								uri: 'https://github.com/BusinessCredit/BCAC_Wallet_Terms_of_Service/raw/master/BCAC_Wallet_Terms_of_Service_zh.pdf',
+								uri: 'https://github.com/DigitalAdvertising/MyCryptosServiceTerm/raw/master/MyCryptos_Wallet_Terms_of_Service_zh.pdf',
 								cache: true
 							}
 						})
 					: this.setState({
 							service_source: {
-								uri: 'https://github.com/BusinessCredit/BCAC_Wallet_Terms_of_Service/raw/master/BCAC_Wallet_Terms_of_Service_en.pdf',
+								uri: 'https://github.com/DigitalAdvertising/MyCryptosServiceTerm/raw/master/MyCryptos_Wallet_Terms_of_Service_en.pdf',
 								cache: true
 							}
 						});

@@ -19,7 +19,11 @@ class Splash extends React.Component {
 		};
 	}
 
-	componentDidMount() {
+	// componentDidMount() {
+
+	// }
+
+	render() {
 		setTimeout(() => {
 			storage
 				.load({
@@ -32,9 +36,6 @@ class Splash extends React.Component {
 					this.props.navigation.navigate('Guide');
 				});
 		}, 1500);
-	}
-
-	render() {
 		return (
 			<Animated.Image
 				style={{

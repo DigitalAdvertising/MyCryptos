@@ -1,10 +1,10 @@
 export default {
 	guide: {
-		welcome: '欢迎来到商信链钱包',
+		welcome: '欢迎来到MyCryptos钱包',
 		importWallet: '导入钱包',
 		createWallet: '创建钱包',
 		importInstructions: '在已有钱包中导出助记词，点击“导入钱包”，输入导出的助记词；导入钱包后请立即备份助记词。',
-		createInstructions: '没有钱包，请点击“创建钱包”，创建钱包时，请牢记您的密码；创建钱包后轻立即备份助记词。'
+		createInstructions: '没有钱包，请点击“创建钱包”，创建钱包时，请牢记您的密码；创建钱包后请立即备份助记词。'
 	},
 	wallet: {
 		mnemonic: '助记词',
@@ -86,7 +86,7 @@ export default {
 			_newVersion: '发现MyCryptos',
 			_version: '版本',
 			upgradeNow: '立即升级',
-			noEscalation: '暂不升级',
+			noEscalation: '稍后升级',
 			noUpdate: '当前已是最新版本，无需更新'
 		},
 		webHost: 'Web3 设置'

@@ -101,8 +101,9 @@ android {
         applicationId "com.mycryptos"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 5
+        versionName "1.1.4"
+        setProperty("archivesBaseName", "MyCryptos" + "-vN" + versionName + "-vC" + versionCode )
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -144,6 +145,10 @@ android {
                         versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
             }
         }
+    }
+    
+    dexOptions {
+        jumboMode true
     }
 }
 
