@@ -21,10 +21,10 @@ import versionCompare from '../../utils/versionCompare'
 var DeviceInfo = require('react-native-device-info');
 
 class CurrencyList extends Component {
-	currencyDetail(title, banlance) {
+	currencyDetail(title, balance) {
 		this.props.navigate('CurrencyDetail', {
 			title: title,
-			banlance: banlance
+			balance: balance
 		});
 	}
 

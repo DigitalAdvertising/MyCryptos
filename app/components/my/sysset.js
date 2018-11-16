@@ -31,14 +31,12 @@ class SysSet extends Component {
 						this.navigate('SetGesturePassword');
 					}}
 				/> */}
-				{
-					// <ListFun
-					// 				fun_name={I18n.t('my.webHost')}
-					// 				onPress={() => {
-					// 					this.navigate('WebSetting');
-					// 				}}
-					// 			/>
-				}
+				<ListFun
+					fun_name={I18n.t('my.webHost')}
+					onPress={() => {
+						this.navigate('WebSetting');
+					}}
+				/>
 				<ListFun
 					fun_name={I18n.t('my.sysSetting.language._title')}
 					onPress={() => {

@@ -85,6 +85,10 @@ class Transfer extends Component {
 	}
 
 	componentDidMount() {
+		this.setState({
+			currencyName: params.title,
+			balance: params.balance
+		});
 		web3.eth.getGasPrice().then((res) => {
 			this.setState({
 				gasPrice: res,
@@ -208,15 +212,6 @@ class Transfer extends Component {
 			<View style={styles.container}>
 				<Input
 					placeholder={I18n.t('assets.currency.receiptAddr')}
-					//"收款人钱包地址"
-					//     <Icon
-					//         name='user'
-					//         size={25}
-					//         onPress={() => {
-					//             alert('联系人')
-					//         }}
-					//     />
-					// }
 					value={this.state.toAddress.length > 0 ? this.state.toAddress : null}
 					onChangeText={(toAddress) => this.setState({ toAddress })}
 					onEndEditing={(event) => {
@@ -226,7 +221,6 @@ class Transfer extends Component {
 								disabledNext: true
 							});
 							Alert.alert(null, I18n.t('assets.transfer.checkAddress'));
-							// Alert.alert(null, '地址无效，请仔细检查！');
 						} else {
 							this.setState(
 								{
@@ -249,7 +243,8 @@ class Transfer extends Component {
 					// "转账金额"
 					onChangeText={(amount) => {
 						this.setState({ amount });
-						if (amount) {
+
+						if (!isNaN(Number(amount)) && Number(amount) <= this.state.balance) {
 							this.setState(
 								{
 									amountFlag: true

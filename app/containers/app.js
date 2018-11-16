@@ -103,9 +103,11 @@ storage
 		key: 'webHost'
 	})
 	.then(({ webHost }) => {
+		console.log("success get webHost")
 		check(webHost);
 	})
 	.catch((e) => {
+		console.log("no webHost setting")
 		check('https://mainnet.infura.io/');
 	});
 

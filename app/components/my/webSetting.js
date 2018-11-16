@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Dimensions, TouchableHighlight, TextInput } from 'react-native';
+import { Text, View, StyleSheet, Picker, TouchableHighlight, TextInput } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { I18n } from '../../../language/i18n';
 import RNRestart from 'react-native-restart';
@@ -57,6 +57,7 @@ class WebSetting extends Component {
 		return (
 			<View style={styles.container}>
 				<Text>WALLET SERVICE URL</Text>
+
 				<TextInput
 					style={{ height: 50, borderBottomWidth: 1, borderColor: '#ccc' }}
 					placeholder={this.state.url}
@@ -81,3 +82,12 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff'
 	}
 });
+
+
+// <Picker
+// selectedValue={this.state.language}
+// style={{ height: 50, width: 100 }}
+// onValueChange={(itemValue, itemIndex) => this.setState({ language: itemValue })}>
+// <Picker.Item label="Java" value="java" />
+// <Picker.Item label="JavaScript" value="js" />
+// </Picker>
