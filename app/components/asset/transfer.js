@@ -47,7 +47,7 @@ class Transfer extends Component {
 	}
 
 	static navigationOptions = ({ navigation }) => ({
-		headerTitle: I18n.t('assets.currency.transfer'), // 转账
+		headerTitle: I18n.t('assets.currency.transfer') + " " + navigation.state.params.currencyName, // 转账
 		headerRight: (
 			<TouchableHighlight
 				underlayColor={'transparent'}
@@ -85,8 +85,9 @@ class Transfer extends Component {
 	}
 
 	componentDidMount() {
+		const { params } = this.props.navigation.state;
 		this.setState({
-			currencyName: params.title,
+			currencyName: params.currencyName,
 			balance: params.balance
 		});
 		web3.eth.getGasPrice().then((res) => {
@@ -102,7 +103,6 @@ class Transfer extends Component {
 				keystoreV3: res.keystoreV3
 			});
 		});
-		const { params } = this.props.navigation.state;
 		if (params.currencyName == 'ETH') {
 			this.setState(
 				{
@@ -135,6 +135,11 @@ class Transfer extends Component {
 												text: 'OK',
 												onPress: () => {
 													this.props.navigation.navigate('Home');
+													// this.props.navigate('CurrencyDetail', {
+													// 	title: params.currencyName,
+													// 	balance: params.balance,
+													// 	txhash: tx
+													// });
 												}
 											}
 										]);
@@ -243,7 +248,6 @@ class Transfer extends Component {
 					// "转账金额"
 					onChangeText={(amount) => {
 						this.setState({ amount });
-
 						if (!isNaN(Number(amount)) && Number(amount) <= this.state.balance) {
 							this.setState(
 								{
@@ -262,6 +266,7 @@ class Transfer extends Component {
 								amountFlag: false,
 								disabledNext: true
 							});
+							Alert.alert(null, I18n.t('assets.transfer.checkBalance'));
 						}
 					}}
 					inputContainerStyle={styles.inputContainerStyle}
@@ -283,12 +288,12 @@ class Transfer extends Component {
 					}}
 					onSlidingComplete={(res) => {
 						this.setState({
-							gasPrice: web3.utils.toWei(res.toFixed(6), 'ether') / this.state.gas
+							gasPrice: (web3.utils.toWei(res.toFixed(6), 'ether') / this.state.gas).toFixed(0)
 						});
 					}}
 					minimumTrackTintColor="#528bf7"
 					thumbTintColor="#528bf7"
-					minimumValue={0.0}
+					minimumValue={0.00001}
 					step={0.0000001}
 					maximumValue={0.00251999}
 				/>

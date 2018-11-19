@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Picker, TouchableHighlight, TextInput } from 'react-native';
+import { Text, View, StyleSheet, Dimensions, TouchableHighlight, TextInput } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { I18n } from '../../../language/i18n';
 import RNRestart from 'react-native-restart';
@@ -56,7 +56,7 @@ class WebSetting extends Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<Text>WALLET SERVICE URL</Text>
+				<Text>{I18n.t('my.webSetting.nodeURL')}</Text>
 
 				<TextInput
 					style={{ height: 50, borderBottomWidth: 1, borderColor: '#ccc' }}
@@ -68,6 +68,25 @@ class WebSetting extends Component {
 						});
 					}}
 				/>
+				<Text style={styles.url_title}>
+					{I18n.t('my.webSetting.predefinedURL')}
+				</Text>
+				<Text
+					style={styles.url_item}
+					onPress={() => {
+						this.setState({ url: "https://mainnet.infura.io" })
+					}}
+				>
+					https://mainnet.infura.io
+			</Text>
+				<Text
+					style={styles.url_item}
+					onPress={() => {
+						this.setState({ url: "http://118.190.120.63" })
+					}}
+				>
+					http://118.190.120.63
+				</Text>
 			</View>
 		);
 	}
@@ -80,6 +99,17 @@ const styles = StyleSheet.create({
 		flex: 1,
 		padding: 20,
 		backgroundColor: '#fff'
+	},
+	url_title: {
+		marginTop: 40,
+		height: 50,
+		lineHeight: 50,
+	},
+	url_item: {
+		height: 50,
+		lineHeight: 50,
+		textAlign: 'left',
+		width: Dimensions.get('window').width
 	}
 });
 

@@ -89,7 +89,11 @@ export default {
 			noEscalation: '稍后升级',
 			noUpdate: '当前已是最新版本，无需更新'
 		},
-		webHost: 'Web3 设置'
+		webHost: 'Web3 设置',
+		webSetting: {
+			nodeURL: "Web3节点服务地址",
+			predefinedURL: "选择预定义的Web3节点服务地址"
+		}
 	},
 	assets: {
 		totalAssets: '账户总资产',
@@ -142,6 +146,7 @@ export default {
 		},
 		transfer: {
 			checkAddress: '地址无效，请仔细检查！',
+			checkBalance: '无效的金额，请确保金额是数字或者有足够的额度',
 			transferInAddress: '转入地址',
 			transferOutAddress: '转出地址'
 		}

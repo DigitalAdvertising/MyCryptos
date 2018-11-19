@@ -287,7 +287,7 @@ const App = createStackNavigator(
 		}
 	},
 	{
-		// initialRouteName: 'Guide',
+		// initialRouteName: 'Home',
 		headerMode: 'screen',
 		navigationOptions: {
 			headerStyle: {

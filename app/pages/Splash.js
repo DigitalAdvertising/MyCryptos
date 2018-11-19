@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dimensions, Animated } from 'react-native';
-import { withNavigation } from 'react-navigation';
+import { withNavigation, NavigationActions, StackActions } from 'react-navigation';
 import { I18n } from '../../language/i18n';
 
 const maxHeight = Dimensions.get('window').height;
@@ -18,7 +18,6 @@ class Splash extends React.Component {
 			isWallet: false
 		};
 	}
-
 	// componentDidMount() {
 
 	// }
@@ -48,4 +47,4 @@ class Splash extends React.Component {
 	}
 }
 
-export default withNavigation(Splash);
+export default Splash;

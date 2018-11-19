@@ -9,8 +9,10 @@ import {
 	RefreshControl,
 	TouchableHighlight,
 	Modal,
-	Linking
+	Linking, 
 } from 'react-native';
+
+//import { NavigationActions, StackActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import actions from '../../store/action/walletInfo';
 import getBalance from '../../utils/addTokens';
@@ -18,6 +20,8 @@ import iterface from '../../utils/iterface';
 import { I18n } from '../../../language/i18n';
 import { checkVersion } from '../../api/index';
 import versionCompare from '../../utils/versionCompare'
+
+import {readStorage, writeStorage} from '../../db/db'
 var DeviceInfo = require('react-native-device-info');
 
 class CurrencyList extends Component {
@@ -71,6 +75,11 @@ class Assets extends Component {
 			isRefreshing: true
 		};
 
+		this.asset = {
+			eth_balance: 0,
+			bcac_balance: 0,
+			daec_balance: 0,			
+		}
 		tracker.trackScreenView("MyAsset");
 	}
 
@@ -91,6 +100,7 @@ class Assets extends Component {
 		return num;
 	}
 
+	//When refresh balance, ensure db get refresh also
 	getAllBalance() {
 		this.setState({
 			isRefreshing: true
@@ -99,6 +109,11 @@ class Assets extends Component {
 		web3.eth.getBalance(this.state.walletAddress).then((res) => {
 			let eth_balance = this.show(web3.utils.fromWei(res, 'ether'));
 			this.setState({ eth_balance });
+			this.asset = {
+				...this.asset,
+				eth_balance: eth_balance
+			}
+			writeStorage("asset", this.asset, e => console.log(e))
 		});
 		getBalance(
 			iterface,
@@ -107,6 +122,12 @@ class Assets extends Component {
 			(bcac_balance) => {
 				bcac_balance = this.show(bcac_balance);
 				this.setState({ bcac_balance });
+
+				this.asset = {
+					...this.asset,
+					bcac_balance: bcac_balance
+				}
+				writeStorage("asset", this.asset, e => console.log(e))
 			}
 		);
 
@@ -117,6 +138,12 @@ class Assets extends Component {
 			(daec_balance) => {
 				daec_balance = this.show(daec_balance);
 				this.setState({ daec_balance });
+
+				this.asset = {
+					...this.asset,
+					daec_balance: daec_balance
+				}
+				writeStorage("asset", this.asset, e => console.log(e))
 			}
 		);
 
@@ -141,13 +168,36 @@ class Assets extends Component {
 						walletAddress: walletAddress
 					},
 					() => {
-						this.getAllBalance();
+						//this.getAllBalance();
 					}
 				);
 			})
 			.catch((x) => {
 				console.log(x);
 			});
+
+		// Get asset value from storage at first, refresh when user scroll down
+		readStorage("asset",
+			(res) => {
+				this.setState({
+					eth_balance: res.eth_balance,
+					bcac_balance: res.bcac_balance,
+					daec_balance: res.daec_balance,
+					isRefreshing: false
+				});
+
+				this.asset = {
+					eth_balance: res.eth_balance,
+					bcac_balance: res.bcac_balance,
+					daec_balance: res.daec_balance,			
+				}
+			},
+			(e) => {
+				console.log(e)
+				this.getAllBalance()
+			}
+		)
+
 		this.updateWalletName();
 
 		// this.setState({
@@ -172,7 +222,7 @@ class Assets extends Component {
 							key: 'localLanguage'
 						})
 						.then((res) => {
-							res.localLanguage&&res.localLanguage.includes('zh') ?
+							res.localLanguage && res.localLanguage.includes('zh') ?
 								this.setState({
 									modalVisible: true,
 									newVersion: latest,
@@ -185,19 +235,19 @@ class Assets extends Component {
 									releaseLog: resVersion.note["en"]
 								})
 						}).catch((e) => {
-							DeviceInfo.default.getDeviceLocale().includes('zh')?
-							this.setState({
-								modalVisible: true,
-								newVersion: latest,
-								releaseLog: resVersion.note["zh"]
-							})
-							:
-							this.setState({
-								modalVisible: true,
-								newVersion: latest,
-								releaseLog: resVersion.note["en"]
-							})
-					})
+							DeviceInfo.default.getDeviceLocale().includes('zh') ?
+								this.setState({
+									modalVisible: true,
+									newVersion: latest,
+									releaseLog: resVersion.note["zh"]
+								})
+								:
+								this.setState({
+									modalVisible: true,
+									newVersion: latest,
+									releaseLog: resVersion.note["en"]
+								})
+						})
 				}
 				// this.setState({
 				// 	newVersion: res.latest,

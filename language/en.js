@@ -93,7 +93,11 @@ export default {
 			noEscalation: 'No upgrade',
 			noUpdate: "Now it's the latest version, no need to update"
 		},
-		webHost: 'Web3 Settings'
+		webHost: 'Web3 Settings',
+		webSetting: {
+			nodeURL: "Web3 node services URL",
+			predefinedURL: "Predefined Web3 node services URL"
+		}
 	},
 	assets: {
 		totalAssets: 'TotalAssets',
@@ -154,6 +158,7 @@ export default {
 		},
 		transfer: {
 			checkAddress: 'Invalid address, please check carefully',
+			checkBalance: 'Invalid balance, ensure balance is correct or you have enough balance',
 			transferInAddress: 'In Address',
 			transferOutAddress: 'Out Address'
 		}
