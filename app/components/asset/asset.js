@@ -9,10 +9,12 @@ import {
 	RefreshControl,
 	TouchableHighlight,
 	Modal,
-	Linking, 
+	Linking,
+	Animated,
+	BackHandler,
+	TouchableOpacity,
 } from 'react-native';
 
-//import { NavigationActions, StackActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import actions from '../../store/action/walletInfo';
 import getBalance from '../../utils/addTokens';
@@ -21,7 +23,7 @@ import { I18n } from '../../../language/i18n';
 import { checkVersion } from '../../api/index';
 import versionCompare from '../../utils/versionCompare'
 
-import {readStorage, writeStorage} from '../../db/db'
+import { readStorage, writeStorage } from '../../db/db'
 var DeviceInfo = require('react-native-device-info');
 
 class CurrencyList extends Component {
@@ -59,7 +61,12 @@ class CurrencyList extends Component {
 	}
 }
 
+let { width, height } = Dimensions.get('window');
+
 class Assets extends Component {
+	_didFocusSubscription;
+	_willBlurSubscription;
+
 	constructor(props) {
 		super(props);
 		this.navigate = this.props.navigation.navigate;
@@ -72,16 +79,56 @@ class Assets extends Component {
 			lock_num: 0,
 			newVersion: '--',
 			modalVisible: false,
-			isRefreshing: true
+			isRefreshing: true,
+			backClickCount: 0
 		};
 
 		this.asset = {
 			eth_balance: 0,
 			bcac_balance: 0,
-			daec_balance: 0,			
+			daec_balance: 0,
 		}
+		this._didFocusSubscription = props.navigation.addListener('didFocus', payload =>
+			BackHandler.addEventListener('hardwareBackPress', this.onBackButtonPressAndroid)
+		);
+		this.springValue = new Animated.Value(100);
 		tracker.trackScreenView("MyAsset");
 	}
+
+	_spring() {
+		this.setState({ backClickCount: 1 }, () => {
+			Animated.sequence([
+				Animated.spring(
+					this.springValue,
+					{
+						toValue: -.15 * height,
+						friction: 5,
+						duration: 300,
+						useNativeDriver: true,
+					}
+				),
+				Animated.timing(
+					this.springValue,
+					{
+						toValue: 100,
+						duration: 300,
+						useNativeDriver: true,
+					}
+				),
+			]).start(() => {
+				this.setState({ backClickCount: 0 });
+			});
+		});
+	}
+	onBackButtonPressAndroid = () => {
+		this.state.backClickCount == 1 ? BackHandler.exitApp() : this._spring();
+		return true;
+  };
+	componentWillUnmount() {
+		this._didFocusSubscription && this._didFocusSubscription.remove();
+    this._willBlurSubscription && this._willBlurSubscription.remove();
+	}
+
 
 	show(num) {
 		num += '';
@@ -157,6 +204,12 @@ class Assets extends Component {
 	}
 
 	componentDidMount() {
+
+
+		this._willBlurSubscription = this.props.navigation.addListener('willBlur', payload =>
+			BackHandler.removeEventListener('hardwareBackPress', this.onBackButtonPressAndroid)
+		);
+
 		storage
 			.load({
 				key: 'walletInfo'
@@ -189,7 +242,7 @@ class Assets extends Component {
 				this.asset = {
 					eth_balance: res.eth_balance,
 					bcac_balance: res.bcac_balance,
-					daec_balance: res.daec_balance,			
+					daec_balance: res.daec_balance,
 				}
 			},
 			(e) => {
@@ -366,6 +419,15 @@ class Assets extends Component {
 						return <CurrencyList item={item} index={index} key={index} navigate={this.navigate} />;
 					})}
 				</ScrollView>
+				<Animated.View style={[styles.animatedView, { transform: [{ translateY: this.springValue }] }]}>
+					<Text style={styles.exitTitleText}>press back again to exit the app</Text>
+					<TouchableOpacity
+						activeOpacity={0.9}
+						onPress={() => BackHandler.exitApp()}
+					>
+						<Text style={styles.exitText}>Exit</Text>
+					</TouchableOpacity>
+				</Animated.View>
 
 				<Modal
 					animationType={'fade'}
@@ -578,5 +640,26 @@ const styles = StyleSheet.create({
 		color: 'rgb(254,56,36)',
 		fontSize: 16,
 		textAlign: 'center'
+	},
+	animatedView: {
+		width,
+		backgroundColor: "#528bf7",
+		elevation: 2,
+		position: "absolute",
+		bottom: 0,
+		padding: 10,
+		justifyContent: "center",
+		alignItems: "center",
+		flexDirection: "row",
+	},
+	exitTitleText: {
+		textAlign: "center",
+		color: "#ffffff",
+		marginRight: 10,
+	},
+	exitText: {
+		color: "#e5933a",
+		paddingHorizontal: 10,
+		paddingVertical: 3
 	}
 });

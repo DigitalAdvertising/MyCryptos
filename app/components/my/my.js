@@ -1,18 +1,75 @@
 import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet, Dimensions, TouchableHighlight } from 'react-native';
+import { View, 
+	Text, Image, StyleSheet, 
+	Dimensions, TouchableHighlight ,
+	Animated,
+	BackHandler,
+	TouchableOpacity,
+} from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { I18n } from '../../../language/i18n';
 const screen = Dimensions.get('window');
 import Icon from '../../pages/iconSets';
 
+let { width, height } = Dimensions.get('window');
+
 class My extends Component {
+	_didFocusSubscription;
+	_willBlurSubscription;
+
 	constructor(props) {
 		super(props);
+		this.state = {
+			backClickCount: 0
+		}
 		this.navigate = this.props.navigation.navigate;
+
+		this.springValue = new Animated.Value(100);
+		this._didFocusSubscription = props.navigation.addListener('didFocus', payload =>
+			BackHandler.addEventListener('hardwareBackPress', this.onBackButtonPressAndroid)
+		);
 
 		tracker.trackScreenView("MyWallet");
 	}
 
+	_spring() {
+		this.setState({ backClickCount: 1 }, () => {
+			Animated.sequence([
+				Animated.spring(
+					this.springValue,
+					{
+						toValue: -.15 * height,
+						friction: 5,
+						duration: 300,
+						useNativeDriver: true,
+					}
+				),
+				Animated.timing(
+					this.springValue,
+					{
+						toValue: 100,
+						duration: 300,
+						useNativeDriver: true,
+					}
+				),
+			]).start(() => {
+				this.setState({ backClickCount: 0 });
+			});
+		});
+	}
+	onBackButtonPressAndroid = () => {
+		this.state.backClickCount == 1 ? BackHandler.exitApp() : this._spring();
+		return true;
+	};
+	componentWillUnmount() {
+		this._didFocusSubscription && this._didFocusSubscription.remove();
+		this._willBlurSubscription && this._willBlurSubscription.remove();
+	}
+	componentDidMount() {
+		this._willBlurSubscription = this.props.navigation.addListener('willBlur', payload =>
+			BackHandler.removeEventListener('hardwareBackPress', this.onBackButtonPressAndroid)
+		);
+	}
 	render() {
 		return (
 			<View style={styles.myPage}>
@@ -82,7 +139,7 @@ class My extends Component {
 								<View style={styles.myColsConPartRowLf}>
 									<Icon name="icon-shezhi" size={20} color="#528bf7" />
 								</View>
-								<View style={[ styles.myColsConPartRowRi, styles.noSplitLine ]}>
+								<View style={[styles.myColsConPartRowRi, styles.noSplitLine]}>
 									<Text>{I18n.t('my.home.systemSetting')}</Text>
 									<View style={styles.myColsConPartRowRi2R}>
 										<Icon name="icon-right" size={15} color="#000" />
@@ -102,7 +159,7 @@ class My extends Component {
 								<View style={styles.myColsConPartRowLf}>
 									<Icon name="icon-bangzhuzhongxin" size={18} color="#528bf7" />
 								</View>
-								<View style={[ styles.myColsConPartRowRi, styles.bottomLine ]}>
+								<View style={[styles.myColsConPartRowRi, styles.bottomLine]}>
 									<Text>{I18n.t('my.home.helpCenter._title')}</Text>
 									<View style={styles.myColsConPartRowRi2R}>
 										<Icon name="icon-right" size={15} color="#000" />
@@ -119,7 +176,7 @@ class My extends Component {
 								<View style={styles.myColsConPartRowLf}>
 									<Icon name="icon-guanyuwomen" size={20} color="#528bf7" />
 								</View>
-								<View style={[ styles.myColsConPartRowRi, styles.noSplitLine ]}>
+								<View style={[styles.myColsConPartRowRi, styles.noSplitLine]}>
 									<Text>{I18n.t('my.home.aboutUs._title')}</Text>
 									<View style={styles.myColsConPartRowRi2R}>
 										<Icon name="icon-right" size={15} color="#000" />
@@ -129,6 +186,15 @@ class My extends Component {
 						</TouchableHighlight>
 					</View>
 				</View>
+				<Animated.View style={[styles.animatedView, { transform: [{ translateY: this.springValue }] }]}>
+					<Text style={styles.exitTitleText}>press back again to exit the app</Text>
+					<TouchableOpacity
+						activeOpacity={0.9}
+						onPress={() => BackHandler.exitApp()}
+					>
+						<Text style={styles.exitText}>Exit</Text>
+					</TouchableOpacity>
+				</Animated.View>
 			</View>
 		);
 	}
@@ -254,5 +320,26 @@ const styles = StyleSheet.create({
 		width: screen.width * 0.35,
 		height: 80,
 		justifyContent: 'space-around'
+	},
+	animatedView: {
+		width,
+		backgroundColor: "#528bf7",
+		elevation: 2,
+		position: "absolute",
+		bottom: 0,
+		padding: 10,
+		justifyContent: "center",
+		alignItems: "center",
+		flexDirection: "row",
+	},
+	exitTitleText: {
+		textAlign: "center",
+		color: "#ffffff",
+		marginRight: 10,
+	},
+	exitText: {
+		color: "#e5933a",
+		paddingHorizontal: 10,
+		paddingVertical: 3
 	}
 });
