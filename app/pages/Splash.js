@@ -29,7 +29,10 @@ class Splash extends React.Component {
 					key: 'walletInfo'
 				})
 				.then((res) => {
-					this.props.navigation.navigate('Home');
+					this.props.navigation.navigate('Home',{
+						refresh: true,
+						address: "init"
+					});
 				})
 				.catch((err) => {
 					this.props.navigation.navigate('Guide');

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Alert, ScrollView, Dimensions } from 'react-native';
 import { I18n } from '../../../../language/i18n';
 import lightWallet from 'eth-lightwallet';
-import { withNavigation } from 'react-navigation';
+import { withNavigation} from 'react-navigation';
 import TextWidget from '../../public/textWidget/textWidget';
 import { CheckBox, Button, Input } from 'react-native-elements';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
@@ -257,7 +257,10 @@ class ImportWallet extends Component {
 
 							setTimeout(() => {
 								option._this.refs.loading.close();
-								option._this.props.navigation.navigate('Home');
+								option._this.props.navigation.navigate('Home',{
+									refresh: true,
+									address: address[0]
+								});
 							}, 100);
 						});
 					}

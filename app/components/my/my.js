@@ -187,12 +187,12 @@ class My extends Component {
 					</View>
 				</View>
 				<Animated.View style={[styles.animatedView, { transform: [{ translateY: this.springValue }] }]}>
-					<Text style={styles.exitTitleText}>press back again to exit the app</Text>
+					<Text style={styles.exitTitleText}>{I18n.t('public.doubleReturn')}</Text>
 					<TouchableOpacity
 						activeOpacity={0.9}
 						onPress={() => BackHandler.exitApp()}
 					>
-						<Text style={styles.exitText}>Exit</Text>
+						<Text style={styles.exitText}>{I18n.t('public.exit')}</Text>
 					</TouchableOpacity>
 				</Animated.View>
 			</View>

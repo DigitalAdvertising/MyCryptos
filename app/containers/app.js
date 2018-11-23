@@ -140,6 +140,13 @@ const TabBarPage = createBottomTabNavigator(
 				),
 				tabBarIcon: ({ focused, tintColor }) => <Icon name="icon-zichan" size={30} color={tintColor} />
 			}
+			// navigationOptions: ({navigation}) => ({
+			// 	tabBarLabel: ({ tintColor, focused }) => (
+			// 		<Text style={{ color: tintColor, fontSize: 12, textAlign: 'center' }}>{I18n.t('tab.assets')}</Text>
+			// 	),
+			// 	tabBarIcon: ({ focused, tintColor }) => <Icon name="icon-zichan" size={30} color={tintColor} />,
+			// 	address: "navigation.state.params.address"
+			// })
 		},
 		My: {
 			screen: My,
@@ -180,7 +187,7 @@ const App = createStackNavigator(
 			screen: TabBarPage,
 			navigationOptions: {
 				header: null,
-				gesturesEnabled: false
+				gesturesEnabled: false,
 			}
 		},
 		Guide: {

@@ -33,7 +33,7 @@ export default {
 		privateKeyIsWrong: 'Wrong private key, please enter again',
 		keystoreIsNull: 'Please enter keystore information ',
 		wrongByKeystoreOrPwd: 'Failed to import wallet, please check private keystore or password  is correct',
-		copyKeystoreTip: 'Please paste the content of Ethereum (ETH) wallet keystore file to input box'
+		copyKeystoreTip: 'Please paste the content of Ethereum (ETH) wallet keystore file to input box',
 	},
 	tab: {
 		assets: 'Assets',
@@ -168,6 +168,8 @@ export default {
 		next: 'Next',
 		back: 'Back',
 		save: 'Save',
+		exit: 'Exit',
+		doubleReturn: 'Press back again to exit the app',
 		payDetail: 'Payment details',
 		enterPassword: 'Enter password',
 		transferOutPrompt: 'No rollout is available during the voting period of the priority node.',

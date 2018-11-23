@@ -23,6 +23,8 @@ import { I18n } from '../../../language/i18n';
 import { checkVersion } from '../../api/index';
 import versionCompare from '../../utils/versionCompare'
 
+import {withNavigation} from 'react-navigation'
+
 import { readStorage, writeStorage } from '../../db/db'
 var DeviceInfo = require('react-native-device-info');
 
@@ -129,7 +131,6 @@ class Assets extends Component {
     this._willBlurSubscription && this._willBlurSubscription.remove();
 	}
 
-
 	show(num) {
 		num += '';
 		num = num.replace(/[^0-9|\.]/g, '');
@@ -204,12 +205,9 @@ class Assets extends Component {
 	}
 
 	componentDidMount() {
-
-
 		this._willBlurSubscription = this.props.navigation.addListener('willBlur', payload =>
 			BackHandler.removeEventListener('hardwareBackPress', this.onBackButtonPressAndroid)
 		);
-
 		storage
 			.load({
 				key: 'walletInfo'
@@ -341,6 +339,11 @@ class Assets extends Component {
 		});
 	}
 
+	componentWillReceiveProps(nextProps) {
+		if(nextProps.navigation.state.params && nextProps.navigation.state.params.refresh){
+			this.getAllBalance()
+		}
+	}
 	render() {
 		const currencyData = [
 			{
@@ -420,12 +423,12 @@ class Assets extends Component {
 					})}
 				</ScrollView>
 				<Animated.View style={[styles.animatedView, { transform: [{ translateY: this.springValue }] }]}>
-					<Text style={styles.exitTitleText}>press back again to exit the app</Text>
+					<Text style={styles.exitTitleText}>{I18n.t('public.doubleReturn')}</Text>
 					<TouchableOpacity
 						activeOpacity={0.9}
 						onPress={() => BackHandler.exitApp()}
 					>
-						<Text style={styles.exitText}>Exit</Text>
+						<Text style={styles.exitText}>{I18n.t('public.exit')}</Text>
 					</TouchableOpacity>
 				</Animated.View>
 
@@ -477,7 +480,7 @@ class Assets extends Component {
 	}
 }
 
-export default connect((state) => state.walletInfo, actions)(Assets);
+export default withNavigation(connect((state) => state.walletInfo, actions)(Assets));
 
 const styles = StyleSheet.create({
 	marginLeft: {

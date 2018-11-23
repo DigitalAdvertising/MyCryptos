@@ -156,6 +156,8 @@ export default {
 		next: '下一步',
 		back: '返回',
 		save: '保存',
+		exit: '退出',
+		doubleReturn: '再按一次返回键退出应用',
 		payDetail: '支付详情',
 		enterPassword: '输入密码',
 		transferOutPrompt: '优先节点投票期间暂不提供转出功能!',

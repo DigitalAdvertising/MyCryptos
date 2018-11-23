@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, Text, Image, Alert, StyleSheet, Dimensions, ScrollView, TouchableHighlight, Clipboard } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input, Slider, Button } from 'react-native-elements';
 import Modal from 'react-native-modalbox';
 import { withNavigation } from 'react-navigation';
@@ -246,8 +245,30 @@ class Transfer extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
+		//validation for qr scanner address
+		const qrAddress = nextProps.navigation.state.params.res
+		if (!web3.utils.isAddress(qrAddress)) {
+			this.setState({
+				toAddressFlag: false,
+				disabledNext: true
+			});
+			Alert.alert(null, I18n.t('assets.transfer.checkAddress'));
+		} else {
+			this.setState(
+				{
+					toAddressFlag: true
+				},
+				() => {
+					if (this.state.toAddressFlag && this.state.amountFlag) {
+						this.setState({
+							disabledNext: false
+						});
+					}
+				}
+			);
+		}
 		this.setState({
-			toAddress: nextProps.navigation.state.params.res
+			toAddress: qrAddress
 		});
 		console.log(nextProps.navigation.state.params.res);
 	}
@@ -318,7 +339,7 @@ class Transfer extends Component {
 					inputContainerStyle={styles.inputContainerStyle}
 				/>
 				<Text style={styles.minerCosts_text}>
-					{I18n.t('assets.currency.transferFee')}
+					{I18n.t('assets.currency.transferFee')}≈{this.show(this.state.cost)}eth
 					{/* 矿工费用 */}
 				</Text>
 				<Slider
@@ -342,7 +363,9 @@ class Transfer extends Component {
 						{I18n.t('assets.currency.transferSpeedSlow')}
 						{/* 慢 */}
 					</Text>
-					<Text style={styles.textAlign}>{this.show(this.state.cost)}ether</Text>
+					<Text style={styles.textAlign}>
+						gasPrice: {web3.utils.fromWei(this.state.gasPrice.toString(), 'gwei')} gwei
+					</Text>
 					<Text>
 						{I18n.t('assets.currency.transferSpeedFast')}
 						{/* 快 */}
@@ -518,6 +541,9 @@ const styles = StyleSheet.create({
 		marginLeft: 10,
 		color: '#999',
 		fontSize: 16
+	},
+	gasPrice_text:{
+		fontSize: 12
 	},
 	gasPrice: {
 		flexDirection: 'row',
