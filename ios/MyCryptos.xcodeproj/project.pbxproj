@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -1123,7 +1124,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = K388DEAHCQ;
+						DevelopmentTeam = 3WGSYWK6K2;
 						ProvisioningStyle = Manual;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -1928,7 +1929,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = K388DEAHCQ;
+				DEVELOPMENT_TEAM = 3WGSYWK6K2;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-randombytes",
@@ -1955,7 +1956,7 @@
 					"-lc++",
 				);
 				PRODUCT_NAME = MyCryptos;
-				PROVISIONING_PROFILE = "fbea67e7-48fe-42e8-badd-30e0f9004594";
+				PROVISIONING_PROFILE = "b9bde5ea-96d3-4784-b239-a3333f2b92ea";
 				PROVISIONING_PROFILE_SPECIFIER = MyCryptos;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1968,7 +1969,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = K388DEAHCQ;
+				DEVELOPMENT_TEAM = 3WGSYWK6K2;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-randombytes",
@@ -1995,7 +1996,7 @@
 					"-lc++",
 				);
 				PRODUCT_NAME = MyCryptos;
-				PROVISIONING_PROFILE = "fbea67e7-48fe-42e8-badd-30e0f9004594";
+				PROVISIONING_PROFILE = "b9bde5ea-96d3-4784-b239-a3333f2b92ea";
 				PROVISIONING_PROFILE_SPECIFIER = MyCryptos;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

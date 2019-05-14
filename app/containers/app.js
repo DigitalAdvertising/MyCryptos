@@ -26,7 +26,7 @@ import SysSet from '../components/my/sysset';
 import HelperCenter from '../components/my/helpercenter';
 import ContactUs from '../components/my/contactus';
 
-import SetGesturePassword from '../components/my/setgesturepassword';
+//import SetGesturePassword from '../components/my/setgesturepassword';
 import SysLanguage from '../components/my/sysLanguage';
 import TransactionRecord from '../components/my/transactionRecord';
 import KnowledgePoint from '../components/my/knowledgePoint';
@@ -89,8 +89,8 @@ function check(host) {
 	}else {
 		store.dispatch({
 			type: 'CONTRACTADDR',
-			BCACContractAddr: '0xe36df5bb57e80629cfc28a31e5f794071c085eca',
-			DAECContractAddr: '0x05ff5af70bd26c4cb93b4bb1028d38f1f251057b',
+			BCACContractAddr: '0x2ad8529da0488a7c2a1af1e22d1902f7ad2943eb',
+			DAECContractAddr: '0x96e9f45a47be8e3e5eb395394c7e28b73aa931ac',
 		});
 	}
 	global.host = host;
@@ -266,7 +266,7 @@ const App = createStackNavigator(
 				headerTitle: () => <Text> {I18n.t('my.sysSetting._title')}</Text>
 			}
 		},
-		SetGesturePassword,
+		//SetGesturePassword,
 		SysLanguage: {
 			screen: SysLanguage,
 			navigationOptions: {

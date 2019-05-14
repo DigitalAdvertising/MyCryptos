@@ -27,7 +27,7 @@ class Recording extends Component {
 		return (
 			<View style={styles.recordDetail_item}>
 				<Text>{this.props.to.replace(this.props.to.slice('8', '32'), '......')}</Text>
-				<Text>{this.show(this.props.value / 1e18)}</Text>
+				<Text>{this.show(web3.utils.fromWei(this.props.value, 'ether'))}</Text>
 			</View>
 		);
 	}
